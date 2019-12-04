@@ -18,11 +18,11 @@ distance = 0.2
 junta1 = model.Parameter("D1@Junta1")
 junta2 = model.Parameter("D1@Junta2")
 
-def moveAngle(angle): #Method to change angle of a mate
+def moveAngle(angle): #Change angle of a mate
     junta1.SystemValue = angle
     bol =model.EditRebuild3
 
-def moveLin(distance): #Method to change dimension of a mate
+def moveLin(distance): #Change dimension of a mate
     junta2.SystemValue = distance
     bol = model.EditRebuild3
 

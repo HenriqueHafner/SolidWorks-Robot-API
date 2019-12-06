@@ -1,0 +1,12 @@
+Mates Types table
+http://help.solidworks.com/2017/english/api/sldworksapi/Get_Mates_Example_VB.htm
+
+Mate Entity Array Table
+http://help.solidworks.com/2018/english/api/sldworksapi/solidworks.interop.sldworks~solidworks.interop.sldworks.imateentity2~entityparams.html
+
+IModelDoC2 Members Page http://help.solidworks.com/2018/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IModelDoc2_members.html
+Mates Types swMateType_e Enumeration http://help.solidworks.com/2018/english/api/swconst/SOLIDWORKS.Interop.swconst~SOLIDWORKS.Interop.swconst.swMateType_e.html
+
+IMate2 Interface Members Page http://help.solidworks.com/2018/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IMate2_members.html
+IMateEntity2 Interface Members Page http://help.solidworks.com/2018/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IMateEntity2_members.html
+

@@ -18,16 +18,15 @@ distance = 0.2
 junta1 = model.Parameter("D1@Junta1")
 junta2 = model.Parameter("D1@Junta2")
 
-def moveAngle(angle): #Change angle of a mate
+def moveAngle(angle): #Method to change angle of a mate
     junta1.SystemValue = angle
-    bol =model.EditRebuild3
+    bol = model.EditRebuild3
 
-def moveLin(distance): #Change dimension of a mate
+def moveLin(distance): #Method to change dimension of a mate
     junta2.SystemValue = distance
     bol = model.EditRebuild3
 
-def getMates(): #It Returns a MateTable Array of Solidworks Mates and their properties
-    debug = 1
+def getmates(debug = 0): #It Returns a MateTable Array of Solidworks Mates and their properties
     MateTable = []
     c = model.FeatureManager.GetFeatures(True)[-1]
     if c.GetTypeName == 'MateGroup':
@@ -39,14 +38,14 @@ def getMates(): #It Returns a MateTable Array of Solidworks Mates and their prop
             ent2 = a.MateEntity(1)
             ref1 = list(ent1.EntityParams)
             ref2 = list(ent2.EntityParams)
+            if a.Type == 0:
+                TypeS = 'Coincidente'
+            elif a.Type == 1:
+                TypeS = 'Concentrico'
+            else:
+                TypeS = 'Outro'
             if debug == 1:        
                 print('Analisando feature: ',a.Name)
-                if a.Type == 0:
-                    TypeS = 'Coincidente'
-                elif a.Type == 1:
-                    TypeS = 'Concentrico'
-                else:
-                    TypeS = 'Outro'
                 print('Nome do mate: ',a.Name)
                 print('Tipo do mate: ',TypeS)
                 print('   A Entity 1 esta na peça: ',ent1.ReferenceComponent.Name)    
@@ -58,9 +57,55 @@ def getMates(): #It Returns a MateTable Array of Solidworks Mates and their prop
             MateTable.append(entry)
             print('.',end='')
             b = b.GetNextSubFeature
-    print('\n')
+    print('Mates extraction complete.')
     return MateTable
 
 def UpdateBodyPosition(): #In development
  swMUtil = sw.GetmathUtility
  return None
+
+
+def createjointtable(MateTable):
+    JointTable = []    
+    for i in range(len(MateTable)):#Run over mates to see links pairs.
+        JointFraction = [MateTable[i][2][0],MateTable[i][3][0],MateTable[i]]
+        AddFraction = True #as default, this JointFracton will create a new 2-links entry.
+        for j in range(len(JointTable)): #Check if theese specific 2 links already have a mate-group to join this JointFraction Mate
+            if JointFraction[0]+JointFraction[1] == JointTable[j][0][0]+JointTable[j][0][1] or JointFraction[1]+JointFraction[0] == JointTable[j][0][0]+JointTable[j][0][1]:
+                JointTable[j].append([JointFraction[2]])
+                AddFraction = False
+        if AddFraction == True: #Add this mate to mate-group for theese specific 2 links
+            JointTable.append([[JointFraction[0],JointFraction[1]],JointFraction[2]])
+    return JointTable
+
+            
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        

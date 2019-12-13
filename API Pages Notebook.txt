@@ -10,3 +10,23 @@ Mates Types swMateType_e Enumeration http://help.solidworks.com/2018/english/api
 IMate2 Interface Members Page http://help.solidworks.com/2018/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IMate2_members.html
 IMateEntity2 Interface Members Page http://help.solidworks.com/2018/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IMateEntity2_members.html
 
+Part Object IComponent2
+https://help.solidworks.com/2013/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IComponent2_members.html
+
+Class hierarchy
+https://www.codestack.net/solidworks-api/getting-started/api-object-model/class-diagram/
+
+Manipulator Method to study
+https://help.solidworks.com/2019/english/api/swpublishedapi/SolidWorks.interop.swpublished~SolidWorks.interop.swpublished.ISwManipulatorHandler2.html
+
+
+-------------------------------------------------------------------------
+IMathTransform Interface Members
+Maybe this object can set transformation to parts
+
+Get Name For selection
+Maybe a possibility to solver "by name" argument bug in"get transformation by name" object
+https://help.solidworks.com/2019/english/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IFeature~GetNameForSelection.html
+
+PresentationTransform Property (IComponent2)
+https://help.solidworks.com/2017/English/api/sldworksapi/SolidWorks.Interop.sldworks~SolidWorks.Interop.sldworks.IComponent2~PresentationTransform.html

@@ -19,7 +19,8 @@ https://www.codestack.net/solidworks-api/getting-started/api-object-model/class-
 Manipulator Method to study
 https://help.solidworks.com/2019/english/api/swpublishedapi/SolidWorks.interop.swpublished~SolidWorks.interop.swpublished.ISwManipulatorHandler2.html
 
-
+Way to save stl automatically
+http://help.solidworks.com/2017/english/api/sldworksapi/solidworks.interop.sldworks~solidworks.interop.sldworks.imodeldocextension~saveas.html#_ga=2.72973840.2077313738.1576276171-9d70c8a0-0ac9-11ea-813d-c90d4ca52510
 -------------------------------------------------------------------------
 IMathTransform Interface Members
 Maybe this object can set transformation to parts

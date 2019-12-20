@@ -6,6 +6,7 @@ Created on Mon Oct  7 17:22:55 2019
 """
 
 import win32com.client
+import numpy as np
 #import pythoncom
 
 sw = win32com.client.Dispatch("SldWorks.Application.26")
@@ -22,9 +23,11 @@ def moveAngle(angle): #Method to change angle of a mate
     junta1.SystemValue = angle
     bol = model.EditRebuild3
 
+
 def moveLin(distance): #Method to change dimension of a mate
     junta2.SystemValue = distance
     bol = model.EditRebuild3
+
 
 def GetMates(debug = 0): #It Returns a MateTable Array of Solidworks Mates and their properties
     MateTable = []
@@ -34,7 +37,7 @@ def GetMates(debug = 0): #It Returns a MateTable Array of Solidworks Mates and t
         ComObj = ComObj.GetFirstSubFeature
         while ComObj != None:
             MateFeature = ComObj.GetSpecificFeature2 #IMate2
-            ent1 = MateFeature.MateEntity(0)
+            ent1 = MateFeature.MateEntity(0) #[pointX, pointY, pointZ, vectorI, vectorJ, vectorK, radius1, radius2]
             ent2 = MateFeature.MateEntity(1)
             ref1 = RoundVec(ent1.EntityParams)
             ref2 = RoundVec(ent2.EntityParams)
@@ -70,7 +73,7 @@ def GetPartPos():
             vector = i.GetSpecificFeature2
             vector = vector.Transform2.ArrayData
             vector = RoundVec(vector)
-            #The first 9 elements define the 3x3 rotation matrix. The next 
+            #The first 9 elements define 3 axis vectors. The next 
             #3 elements define the translation component. The next element 
             #defines the scaling component. The last 3 elements are unused.
             PartPos.append([i.Name,vector])
@@ -105,6 +108,13 @@ def CreateJointTable(MateTable):
             JointTable.append([['Junta_'+str(JointNumber)],[JointFraction[0],JointFraction[1]],JointFraction[2]])
             JointNumber += 1
     return JointTable
+
+def VectorTransf(ChildBase,Vector):
+    a = [] #tensor from ChildBase #[[x1,x2,x3],[y1,y2,y3],[z1,z2,z3]]
+    b = [] #Vector in referential base
+    VectorBaseChild = np.linlag.solve(a,b)
+    VectorBaseChild = VectorBaseChild.round(6)
+    return VectorBaseChild
 
 def Run():  
     global MateTable

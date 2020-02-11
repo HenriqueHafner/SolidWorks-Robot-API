@@ -34,20 +34,27 @@ def GetMates(debug = 0): #It Returns a MateTable Array of Solidworks Mates and t
     ComObj = model.FeatureManager.GetFeatures(True)[-1]
     if ComObj.GetTypeName == 'MateGroup':
         print('Working.',end='')
+        mate_index = 1
+        partposA,partposB = 'partposA','partposB'
+        parent_index = 'parent_index'
         ComObj = ComObj.GetFirstSubFeature
+
         while ComObj != None:
             MateFeature = ComObj.GetSpecificFeature2 #IMate2
-            ent1 = MateFeature.MateEntity(0) #[pointX, pointY, pointZ, vectorI, vectorJ, vectorK, radius1, radius2]
+            ent1 = MateFeature.MateEntity(0) 
             ent2 = MateFeature.MateEntity(1)
-            ref1 = RoundVec(ent1.EntityParams)
-            ref2 = RoundVec(ent2.EntityParams)
-            
+            ref1 = RoundVec(ent1.EntityParams) #[pointX, pointY, pointZ, vectorI, vectorJ, vectorK, radius1, radius2]
+            ref2 = RoundVec(ent2.EntityParams)           
+            PosLimts = ['None','None']
             if MateFeature.Type == 0:
-                TypeS = 'Coincidente'
+                TypeS = 'CoincidentPlane'
             elif MateFeature.Type == 1:
-                TypeS = 'Concentrico'
+                TypeS = 'ConcentricCylinder'
+            elif MateFeature.Type == 5:
+                TypeS = 'LimitedSliding'
+                PosLimts = [MateFeature.MinimumVariation,MateFeature.MaximumVariation]
             else:
-                TypeS = 'Outro'
+                TypeS = 'Outro '+str(MateFeature.Type)
             if debug == 1:        
                 print('Analisando feature: ',MateFeature.Name)
                 print('Nome do mate: ',MateFeature.Name)
@@ -57,9 +64,11 @@ def GetMates(debug = 0): #It Returns a MateTable Array of Solidworks Mates and t
                 print('   A Entity 2 esta na peça: ',ent2.ReferenceComponent.Name)        
                 print('     Com parametros: ', ref2,'do tipo',ent2.ReferenceType2)
                 print('\n')
-            entry = [MateFeature.Name,TypeS,[ent1.ReferenceComponent.Name,ref1,ent1.ReferenceType2],[ent2.ReferenceComponent.Name,ref2,ent2.ReferenceType2]]
-            MateTable.append(entry)
+            entry = [MateFeature.Name,TypeS,[ent1.ReferenceComponent.Name,ref1,ent1.ReferenceType2],[ent2.ReferenceComponent.Name,ref2,ent2.ReferenceType2],PosLimts]
+            entry_b = [mate_index,ent2.ReferenceComponent.Name,ent2.ReferenceComponent.Name,partposA,partposB,TypeS,[ref1,ref2,PosLimts],parent_index]
+            MateTable.append(entry_b)
             print('.',end='')
+            mate_index += 1
             ComObj = ComObj.GetNextSubFeature
     print('Mates extraction complete.')
     return MateTable
@@ -105,9 +114,18 @@ def CreateJointTable(MateTable):
                 JointTable[j].append([JointFraction[2]])
                 AddFraction = False
         if AddFraction == True: #Add this mate to mate-group for theese specific 2 links
-            JointTable.append([['Junta_'+str(JointNumber)],[JointFraction[0],JointFraction[1]],JointFraction[2]])
+            JointTable.append([['Junta_'+str(JointNumber)],[JointFraction[0],JointFraction[1],'ChildPos'],JointFraction[2]])
             JointNumber += 1
+    
     return JointTable
+
+def SetParentTree(JointTable):
+    ParentTable = []
+    for i in range(len(JointTable)):
+        ParentTable.append(JointTable[i][1])      
+    
+    return ParentTable
+    
 
 def VectorTransf(ChildBase,Vector):
     a = [] #tensor from ChildBase #[[x1,x2,x3],[y1,y2,y3],[z1,z2,z3]]
@@ -120,13 +138,35 @@ def Run():
     global MateTable
     global JointTable
     global PartPos
+
     MateTable = GetMates()
-    JointTable = CreateJointTable(MateTable)
     PartPos = GetPartPos()
+    BaseLinkName = PartPos[0][0]
+    JointTable = CreateJointTable(MateTable)
     return None
 
+#JointTable[n] -> Joint number 'n'
+#JointTable[n][0] -> JointName
+
+        
+        
+        
+        
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
         
         
         
@@ -134,11 +174,32 @@ def Run():
         
         
         
-        
-        
-        
-        
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         
         
         

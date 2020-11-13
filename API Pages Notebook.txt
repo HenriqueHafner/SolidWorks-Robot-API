@@ -1,3 +1,6 @@
+Interesting documentation about Python COM Objects that needs especial parameters / arguments .
+https://pythonhosted.org/comtypes/#using-com-objects
+
 Mates Types table
 http://help.solidworks.com/2017/english/api/sldworksapi/Get_Mates_Example_VB.htm
 
